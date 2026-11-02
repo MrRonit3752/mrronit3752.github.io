@@ -3,387 +3,411 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brawl Stars Giveaway - 20 Skins & 5 Pins!</title>
+    <title>Brawl Stars Giveaway Showcase - 20 Skins & 5 Pins</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Lilita One for exact Brawl Stars arcade vibe -->
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --panel-bg: rgba(30, 41, 59, 0.7);
-            --accent-yellow: #facc15;
-            --accent-pink: #ec4899;
-            --accent-blue: #38bdf8;
-            --text-main: #f8fafc;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --brawl-yellow: #FFC700;
+            --brawl-orange: #FF8A00;
+            --brawl-purple: #5A189A;
+            --brawl-dark: #1A0033;
+            --brawl-blue: #00B4D8;
+            --brawl-red: #FF2A54;
+            --brawl-green: #2ECC71;
         }
 
         body {
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(236, 72, 153, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(56, 189, 248, 0.15) 0%, transparent 40%);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            overflow-x: hidden;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            margin-top: 10px;
-            z-index: 10;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            background: linear-gradient(to right, #facc15, #f43f5e, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            font-weight: 900;
-            letter-spacing: 1px;
-            text-shadow: 0 4px 20px rgba(244, 63, 94, 0.3);
-        }
-
-        p.subtitle {
-            color: #94a3b8;
-            font-size: 1rem;
-            margin-top: 5px;
-        }
-
-        .stats-badge {
-            display: inline-block;
-            background: rgba(250, 204, 21, 0.1);
-            border: 1px solid rgba(250, 204, 21, 0.3);
-            color: var(--accent-yellow);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            margin-top: 8px;
-        }
-
-        /* Carousel Container */
-        .carousel-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            height: 420px;
-            perspective: 1200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .carousel-track {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .card {
-            position: absolute;
-            width: 260px;
-            height: 360px;
-            left: calc(50% - 130px);
-            top: calc(50% - 180px);
-            background: var(--panel-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            transition: transform 0.6s, opacity 0.6s, border-color 0.3s;
-            cursor: pointer;
+            font-family: 'Lilita One', cursive, sans-serif;
             user-select: none;
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #3c096c 0%, #10002b 100%);
+            min-height: 100vh;
+            transition: background 0.2s ease;
         }
 
-        .card.active {
-            border-color: var(--accent-yellow);
-            box-shadow: 0 0 30px rgba(250, 204, 21, 0.25);
+        /* Animated Sunburst Background */
+        .bg-sunburst {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-conic-gradient(
+                from 0deg,
+                rgba(255, 255, 255, 0.03) 0deg 15deg,
+                transparent 15deg 30deg
+            );
+            animation: rotateSunburst 60s linear infinite;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        .card-img-box {
-            width: 160px;
-            height: 160px;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+        @keyframes rotateSunburst {
+            100% { transform: rotate(360deg); }
         }
 
-        .card img {
-            max-width: 130px;
-            max-height: 130px;
-            object-fit: contain;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6));
-            transition: transform 0.3s;
+        /* Chroma Key Green Screen Mode */
+        body.chroma-mode {
+            background: #00FF00 !important;
+        }
+        body.chroma-mode .bg-sunburst,
+        body.chroma-mode .floating-particles {
+            display: none !important;
         }
 
-        .card:hover img {
-            transform: scale(1.08);
+        /* Brawl Stars Text Outline & Shadow */
+        .brawl-text {
+            color: #FFFFFF;
+            -webkit-text-stroke: 2px #000000;
+            paint-order: stroke fill;
+            text-shadow: 0px 4px 0px #000000;
+            letter-spacing: 0.03em;
         }
 
-        .card-info {
-            text-align: center;
-            width: 100%;
+        .brawl-text-lg {
+            color: #FFFFFF;
+            -webkit-text-stroke: 6px #000000;
+            paint-order: stroke fill;
+            text-shadow: 0px 6px 0px #000000;
+            letter-spacing: 0.04em;
         }
 
-        .card-category {
-            font-size: 0.75rem;
+        .brawl-text-yellow {
+            color: #FFC700;
+            -webkit-text-stroke: 5px #000000;
+            paint-order: stroke fill;
+            text-shadow: 0px 5px 0px #000000;
+        }
+
+        /* Arcade Slanted Buttons & Boxes */
+        .brawl-box {
+            border: 4px solid #000000;
+            box-shadow: 0px 6px 0px #000000;
+            transform: skewX(-6deg);
+            border-radius: 14px;
+        }
+
+        .brawl-btn {
+            border: 4px solid #000000;
+            box-shadow: 0px 6px 0px #000000, inset 0px 4px 0px rgba(255,255,255,0.45);
+            transform: skewX(-6deg);
+            border-radius: 12px;
+            transition: all 0.1s ease;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #cbd5e1;
-            margin-bottom: 4px;
-            font-weight: 700;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 6px;
-        }
-
-        .card-qty {
-            background: rgba(236, 72, 153, 0.2);
-            color: #f43f5e;
-            border: 1px solid rgba(236, 72, 153, 0.4);
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            display: inline-block;
-        }
-
-        .copy-btn {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .brawl-btn:hover {
+            transform: skewX(-6deg) translateY(-2px) scale(1.03);
+            box-shadow: 0px 8px 0px #000000, inset 0px 4px 0px rgba(255,255,255,0.6);
+        }
+
+        .brawl-btn:active {
+            transform: skewX(-6deg) translateY(4px);
+            box-shadow: 0px 2px 0px #000000, inset 0px 2px 0px rgba(255,255,255,0.3);
+        }
+
+        .unskew {
+            transform: skewX(6deg);
+        }
+
+        /* 3D Coverflow Carousel Styles */
+        .carousel-stage {
+            perspective: 1200px;
+            position: relative;
+            height: 430px;
             width: 100%;
-            margin-top: 10px;
-        }
-
-        .copy-btn:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        /* Controls */
-        .controls-panel {
             display: flex;
-            gap: 15px;
             align-items: center;
-            background: rgba(15, 23, 42, 0.8);
-            padding: 12px 25px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            z-index: 10;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
             justify-content: center;
+            overflow: visible;
         }
 
-        .btn {
-            background: #334155;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: bold;
+        .brawl-card {
+            position: absolute;
+            width: 280px;
+            height: 390px;
+            border: 5px solid #000000;
+            border-radius: 20px;
+            box-shadow: 0px 12px 0px #000000, 0px 20px 30px rgba(0,0,0,0.6);
+            transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
             cursor: pointer;
-            transition: all 0.2s;
+            overflow: hidden;
             display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.9rem;
+            flex-direction: column;
+            justify-content: space-between;
+            transform-style: preserve-3d;
         }
 
-        .btn:hover {
-            background: #475569;
-            transform: translateY(-2px);
+        .brawl-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 45%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #ec4899, #f43f5e);
-            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+        /* Card shine sweep on active card */
+        .brawl-card.active-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(30deg);
+            animation: cardShine 3.5s infinite;
+            pointer-events: none;
+            z-index: 3;
         }
 
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #db2777, #e11d48);
+        @keyframes cardShine {
+            0% { left: -60%; }
+            25% { left: 130%; }
+            100% { left: 130%; }
         }
 
-        /* Footer Rules */
-        footer {
-            text-align: center;
-            font-size: 0.85rem;
-            color: #64748b;
-            max-width: 600px;
-            line-height: 1.4;
-            z-index: 10;
+        /* Rarity Themes */
+        .rarity-legendary {
+            background: linear-gradient(145deg, #FFF056 0%, #FFB800 50%, #E07A00 100%);
+        }
+        .rarity-mythic {
+            background: linear-gradient(145deg, #FF5E7E 0%, #E50038 55%, #800020 100%);
+        }
+        .rarity-epic {
+            background: linear-gradient(145deg, #C77DFF 0%, #7B2CBF 55%, #3C096C 100%);
+        }
+        .rarity-superrare {
+            background: linear-gradient(145deg, #48CAE4 0%, #0077B6 55%, #03045E 100%);
+        }
+        .rarity-pin {
+            background: linear-gradient(145deg, #2EC4B6 0%, #FF9F1C 50%, #FFBF69 100%);
         }
 
-        footer span {
-            color: #cbd5e1;
-            font-weight: 600;
+        /* Floating Star Animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(-3deg); }
+            50% { transform: translateY(-8px) rotate(3deg); }
+        }
+        .float-anim {
+            animation: floatSlow 2.8s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 199, 0, 0.8)); }
+            50% { filter: drop-shadow(0 0 22px rgba(255, 199, 0, 1)); }
+        }
+        .glow-badge {
+            animation: pulseGlow 2s infinite;
+        }
+
+        /* Hide UI in OBS Clean Mode */
+        body.clean-mode .control-hud {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+        body.clean-mode:hover .control-hud {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body>
+<body class="text-white flex flex-col justify-between min-h-screen p-3 md:p-6 relative">
 
-    <header>
-        <h1>🎁 Brawl Stars Giveaway 🎁</h1>
-        <p class="subtitle">25 Total Winners • 20 Skins & 5 Pins Up For Grabs!</p>
-        <div class="stats-badge">8x Sakura Spike • 12x Mariano Kit • 5x Starr Phew</div>
+    <!-- Animated Sunburst Backdrop -->
+    <div class="bg-sunburst"></div>
+
+    <!-- TOP HEADER BANNER (Always visible for Video Recording) -->
+    <header class="relative z-10 flex flex-col items-center justify-center text-center mt-1">
+        <!-- Top Pill Badge -->
+        <div class="brawl-box bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 px-5 py-1 mb-2 inline-flex items-center gap-2 glow-badge">
+            <div class="unskew flex items-center gap-2">
+                <i class="fa-solid fa-star text-yellow-300 text-lg animate-spin" style="animation-duration: 6s;"></i>
+                <span class="brawl-text text-sm md:text-base tracking-wider uppercase" id="channelBadgeText">SPECIAL SUBSCRIBER GIVEAWAY!</span>
+                <i class="fa-solid fa-star text-yellow-300 text-lg animate-spin" style="animation-duration: 6s;"></i>
+            </div>
+        </div>
+
+        <!-- Main Explosive Headline -->
+        <div class="relative inline-block">
+            <h1 class="brawl-text-lg text-4xl sm:text-6xl md:text-7xl uppercase tracking-wide leading-none transform -rotate-1">
+                <span class="brawl-text-yellow">20 SKINS</span> & <span class="text-cyan-300">5 PINS</span>
+            </h1>
+            <div class="brawl-box bg-yellow-400 px-4 py-0.5 inline-block absolute -bottom-4 -right-6 transform rotate-6">
+                <span class="unskew block brawl-text text-black text-sm md:text-lg">25 WINNERS!</span>
+            </div>
+        </div>
+
+        <!-- Category / Filter Tabs -->
+        <div class="flex flex-wrap items-center justify-center gap-2 md:gap-3 mt-7">
+            <button onclick="setFilter('all')" id="tab-all" class="brawl-btn bg-yellow-400 text-black px-4 py-2 text-sm md:text-lg">
+                <span class="unskew block brawl-text"><i class="fa-solid fa-layer-group mr-1"></i> ALL PRIZES (25)</span>
+            </button>
+            <button onclick="setFilter('skin')" id="tab-skin" class="brawl-btn bg-purple-600 px-4 py-2 text-sm md:text-lg">
+                <span class="unskew block brawl-text"><i class="fa-solid fa-mask mr-1 text-yellow-300"></i> 20 SKINS</span>
+            </button>
+            <button onclick="setFilter('pin')" id="tab-pin" class="brawl-btn bg-pink-600 px-4 py-2 text-sm md:text-lg">
+                <span class="unskew block brawl-text"><i class="fa-solid fa-face-grin-stars mr-1 text-yellow-300"></i> 5 PINS</span>
+            </button>
+            <button onclick="toggleRulesModal()" id="tab-rules" class="brawl-btn bg-emerald-500 px-4 py-2 text-sm md:text-lg">
+                <span class="unskew block brawl-text"><i class="fa-solid fa-list-check mr-1 text-yellow-200"></i> HOW TO ENTER</span>
+            </button>
+        </div>
     </header>
 
-    <div class="carousel-container">
-        <div class="carousel-track" id="track"></div>
-    </div>
+    <!-- MAIN INTERACTIVE 3D CAROUSEL SECTION -->
+    <main class="relative z-10 flex-1 flex flex-col items-center justify-center my-2">
+        
+        <div class="w-full max-w-6xl flex items-center justify-center relative">
+            <!-- Left Arcade Arrow -->
+            <button onclick="prevCard()" class="brawl-btn bg-amber-400 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center z-30 absolute left-1 md:left-6">
+                <i class="fa-solid fa-caret-left text-3xl md:text-4xl text-white drop-shadow-[0_3px_0_#000] unskew"></i>
+            </button>
 
-    <div class="controls-panel">
-        <button class="btn" onclick="rotateCarousel(-1)">◀ Prev</button>
-        <button class="btn btn-primary" onclick="triggerConfetti()">🎉 Hype Confetti</button>
-        <button class="btn" onclick="toggleAutoPlay()" id="autoBtn">▶ Auto-Spin: OFF</button>
-        <button class="btn" onclick="rotateCarousel(1)">Next ▶</button>
-    </div>
+            <!-- 3D Cards Stage -->
+            <div id="carouselStage" class="carousel-stage">
+                <!-- Cards dynamically injected here -->
+            </div>
 
-    <footer>
-        To enter: Subscribe, Like, and comment your favorite reward + your social handle! <span>Good luck!</span>
+            <!-- Right Arcade Arrow -->
+            <button onclick="nextCard()" class="brawl-btn bg-amber-400 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center z-30 absolute right-1 md:right-6">
+                <i class="fa-solid fa-caret-right text-3xl md:text-4xl text-white drop-shadow-[0_3px_0_#000] unskew"></i>
+            </button>
+        </div>
+
+        <!-- Counter & Active Card Action Pill -->
+        <div class="flex flex-wrap items-center justify-center gap-3 mt-2 z-20">
+            <div class="brawl-box bg-black/80 px-5 py-1.5 flex items-center gap-3">
+                <span class="unskew brawl-text text-yellow-400 text-lg md:text-xl" id="counterDisplay">ITEM #1 OF 25</span>
+                <span class="unskew text-xs text-gray-300 font-sans font-bold hidden sm:inline">| Click active card to customize image/text</span>
+            </div>
+            <button onclick="openEditModal(currentIndex)" class="brawl-btn bg-cyan-500 px-3 py-1.5 text-sm control-hud transition-all duration-300">
+                <span class="unskew block brawl-text"><i class="fa-solid fa-pen-to-square mr-1"></i> EDIT CARD</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- HOW TO ENTER BANNER (Always visible or toggleable at bottom of showcase) -->
+    <section id="rulesStrip" class="relative z-10 max-w-5xl w-full mx-auto mb-3">
+        <div class="brawl-box bg-gradient-to-r from-indigo-900 via-purple-800 to-indigo-900 p-3 md:p-4">
+            <div class="unskew flex flex-col md:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <span class="bg-yellow-400 text-black border-2 border-black px-3 py-1 rounded-lg brawl-text text-sm md:text-base whitespace-nowrap">
+                        HOW TO ENTER:
+                    </span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
+                    <!-- Rule 1 -->
+                    <div class="bg-black/40 border-2 border-black rounded-xl px-3 py-2 flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-red-500 border-2 border-black flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-thumbs-up text-white text-sm"></i>
+                        </div>
+                        <span class="brawl-text text-sm md:text-base truncate" id="stripRule1">1. LIKE & SUBSCRIBE</span>
+                    </div>
+                    <!-- Rule 2 -->
+                    <div class="bg-black/40 border-2 border-black rounded-xl px-3 py-2 flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-blue-500 border-2 border-black flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-comment-dots text-white text-sm"></i>
+                        </div>
+                        <span class="brawl-text text-sm md:text-base truncate" id="stripRule2">2. COMMENT FAV BRAWLER</span>
+                    </div>
+                    <!-- Rule 3 -->
+                    <div class="bg-black/40 border-2 border-black rounded-xl px-3 py-2 flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-yellow-400 border-2 border-black flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-bell text-black text-sm"></i>
+                        </div>
+                        <span class="brawl-text text-sm md:text-base truncate" id="stripRule3">3. INCLUDE DISCORD / IG</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YOUTUBER RECORDING CONTROL DECK -->
+    <footer class="control-hud relative z-20 transition-all duration-300">
+        <div class="max-w-5xl mx-auto brawl-box bg-gray-900/95 px-4 py-2.5 flex flex-wrap items-center justify-between gap-2">
+            <div class="unskew flex flex-wrap items-center gap-2">
+                <!-- Auto-Spin Toggle -->
+                <button id="autoPlayBtn" onclick="toggleAutoPlay()" class="brawl-btn bg-emerald-500 px-3.5 py-1.5 text-xs md:text-sm">
+                    <span class="unskew block brawl-text" id="autoPlayText"><i class="fa-solid fa-pause mr-1"></i> AUTO-SPIN: ON</span>
+                </button>
+
+                <!-- Speed Selector -->
+                <button onclick="cycleSpeed()" class="brawl-btn bg-blue-500 px-3 py-1.5 text-xs md:text-sm">
+                    <span class="unskew block brawl-text" id="speedText"><i class="fa-solid fa-gauge-high mr-1"></i> SPEED: NORMAL</span>
+                </button>
+
+                <!-- Trigger Confetti Button -->
+                <button onclick="triggerHypeConfetti()" class="brawl-btn bg-gradient-to-r from-yellow-400 to-orange-500 px-3.5 py-1.5 text-xs md:text-sm">
+                    <span class="unskew block brawl-text"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> HYPE CONFETTI!</span>
+                </button>
+            </div>
+
+            <div class="unskew flex flex-wrap items-center gap-2">
+                <!-- Green Screen Chroma Key Toggle -->
+                <button onclick="toggleChromaKey()" id="chromaBtn" class="brawl-btn bg-lime-500 px-3.5 py-1.5 text-xs md:text-sm">
+                    <span class="unskew block brawl-text"><i class="fa-solid fa-video mr-1"></i> GREEN SCREEN (#00FF00)</span>
+                </button>
+
+                <!-- Hide Controls Mode -->
+                <button onclick="toggleCleanMode()" id="cleanBtn" class="brawl-btn bg-purple-500 px-3 py-1.5 text-xs md:text-sm" title="Hides this bottom bar until you hover over the bottom">
+                    <span class="unskew block brawl-text"><i class="fa-solid fa-eye-slash mr-1"></i> CLEAN REC MODE</span>
+                </button>
+            </div>
+        </div>
     </footer>
 
-    <script>
-        // Pre-loaded items based on your exact details
-        const items = [
-            { name: "Sakura Spike", type: "Epic Skin", qty: "8 Available", img: "62693.webp", color: "#a855f7" },
-            { name: "Mariano Kit", type: "Epic Skin", qty: "12 Available", img: "62694.webp", color: "#3b82f6" },
-            { name: "Starr Phew", type: "Collector Pin", qty: "5 Available", img: "62695.webp", color: "#eab308" }
-        ];
+    <!-- BIG "HOW TO ENTER" FULL OVERLAY MODAL -->
+    <div id="rulesModal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="brawl-box bg-gradient-to-b from-purple-700 to-indigo-950 max-w-2xl w-full p-6 md:p-8 relative">
+            <div class="unskew">
+                <!-- Close Button -->
+                <button onclick="toggleRulesModal()" class="brawl-btn bg-red-500 w-10 h-10 flex items-center justify-center absolute -top-4 -right-4">
+                    <span class="unskew brawl-text text-xl">X</span>
+                </button>
 
-        // Duplicate items to build a rich carousel loop of 25 items matching your counts
-        let carouselItems = [];
-        for(let i=0; i<8; i++) carouselItems.push(items[0]);
-        for(let i=0; i<12; i++) carouselItems.push(items[1]);
-        for(let i=0; i<5; i++) carouselItems.push(items[2]);
+                <div class="text-center mb-6">
+                    <span class="bg-yellow-400 border-2 border-black px-3 py-1 rounded-full brawl-text text-sm uppercase">Official Giveaway Rules</span>
+                    <h2 class="brawl-text-lg text-4xl md:text-5xl text-yellow-400 mt-2">HOW TO ENTER & WIN!</h2>
+                    <p class="font-sans font-bold text-purple-200 text-sm mt-1">Click any rule text below to customize it for your video!</p>
+                </div>
 
-        const track = document.getElementById('track');
-        let currentIndex = 0;
-        let autoPlayInterval = null;
-        let isAutoPlaying = false;
-
-        function buildCarousel() {
-            track.innerHTML = '';
-            const angleStep = 360 / carouselItems.length;
-            const radius = window.innerWidth < 768 ? 220 : 320;
-
-            carouselItems.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = `card ${index === currentIndex ? 'active' : ''}`;
-                
-                const theta = angleStep * index;
-                card.style.transform = `rotateY(${theta}deg) translateZ(${radius}px)`;
-
-                card.innerHTML = `
-                    <div class="card-img-box" style="border-color: ${item.color};">
-                        <img src="${item.img}" alt="${item.name}">
+                <div class="space-y-4">
+                    <div class="brawl-box bg-gradient-to-r from-red-500 to-orange-500 p-4 flex items-center gap-4">
+                        <div class="unskew flex items-center gap-4 w-full">
+                            <div class="w-12 h-12 rounded-xl bg-black/30 border-2 border-black flex items-center justify-center shrink-0">
+                                <span class="brawl-text text-2xl text-yellow-300">1</span>
+                            </div>
+                            <input type="text" id="inputRule1" oninput="syncRules()" value="1. LIKE & SUBSCRIBE TO THE CHANNEL" 
+                                class="bg-transparent brawl-text text-xl md:text-2xl w-full focus:outline-none focus:bg-black/20 px-2 rounded" />
+                        </div>
                     </div>
-                    <div class="card-info">
-                        <div class="card-category" style="color: ${item.color}">${item.type}</div>
-                        <div class="card-title">${item.name}</div>
-                        <div class="card-qty">${item.qty}</div>
-                        <button class="copy-btn" onclick="event.stopPropagation(); copyComment('${item.name}')">💬 Copy for Comment</button>
+
+                    <div class="brawl-box bg-gradient-to-r from-blue-500 to-cyan-500 p-4 flex items-center gap-4">
+                        <div class="unskew flex items-center gap-4 w-full">
+                            <div class="w-12 h-12 rounded-xl bg-black/30 border-2 border-black flex items-center justify-center shrink-0">
+                                <span class="brawl-text text-2xl text-yellow-300">2</span>
+                            </div>
+                            <input type="text" id="inputRule2" oninput="syncRules()" value="2. COMMENT YOUR FAVORITE BRAWLER" 
+                                class="bg-transparent brawl-text text-xl md:text-2xl w-full focus:outline-none focus:bg-black/20 px-2 rounded" />
+                        </div>
                     </div>
-                `;
 
-                card.onclick = () => {
-                    currentIndex = index;
-                    updateCarousel();
-                };
-
-                track.appendChild(card);
-            });
-            updateCarousel();
-        }
-
-        function updateCarousel() {
-            const angleStep = 360 / carouselItems.length;
-            const targetRotation = -currentIndex * angleStep;
-            track.style.transform = `rotateY(${targetRotation}deg)`;
-
-            const cards = track.querySelectorAll('.card');
-            cards.forEach((card, idx) => {
-                if (idx === currentIndex) {
-                    card.classList.add('active');
-                } else {
-                    card.classList.remove('active');
-                }
-            });
-        }
-
-        function rotateCarousel(direction) {
-            currentIndex = (currentIndex + direction + carouselItems.length) % carouselItems.length;
-            updateCarousel();
-        }
-
-        function toggleAutoPlay() {
-            const btn = document.getElementById('autoBtn');
-            if (isAutoPlaying) {
-                clearInterval(autoPlayInterval);
-                isAutoPlaying = false;
-                btn.innerText = "▶ Auto-Spin: OFF";
-                btn.style.background = "#334155";
-            } else {
-                autoPlayInterval = setInterval(() => {
-                    rotateCarousel(1);
-                }, 2000);
-                isAutoPlaying = true;
-                btn.innerText = "⏸ Auto-Spin: ON";
-                btn.style.background = "#059669";
-            }
-        }
-
-        function triggerConfetti() {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
-        }
-
-        function copyComment(itemName) {
-            const text = `I want to win the ${itemName}! Good luck everyone! 🎮✨`;
-            navigator.clipboard.writeText(text).then(() => {
-                alert(`Copied to clipboard:\n\n"${text}"`);
-            });
-        }
-
-        window.onload = buildCarousel;
-        window.onresize = buildCarousel;
-    </script>
-</body>
-</html>
+                    <div class="brawl-box bg-gradient-to-r from-emerald-500 to-teal-500 p-4 flex items-center gap-4">
+                        <div class="unskew flex items-center gap-4 w-full">
+                            <div class="w-12 h-12 rounded-xl bg-black/30 border-2 border-black flex items-center justify-center shrink-0">
+                                <span class="brawl-text text-2xl text-yellow-300">3</span>
+                            </div>
+                            <input type="text" id="inputRule3" oninput="syncRules()" value="3. ADD YOUR DISCORD OR IG HANDLE"
